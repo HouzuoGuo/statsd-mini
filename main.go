@@ -26,13 +26,13 @@ type Packet struct {
 }
 
 var (
-	serviceAddress   = flag.String("address", ":8125", "UDP service address")
-	gangliaAddress   = flag.String("ganglia", "", "Ganglia gmond servers, comma separated")
-	gangliaPort      = flag.Int("ganglia-port", 8649, "Ganglia gmond service port")
-	gangliaSpoofHost = flag.String("ganglia-spoof-host", "", "Ganglia gmond spoof host string")
-	gangliaGroup     = flag.String("ganglia-group", "statsd", "Ganglia metric group name")
-	calculationInterval    = flag.Int64("calculation-interval", 10, "Calculation interval")
-	debug            = flag.Bool("debug", false, "Debug mode")
+	serviceAddress      = flag.String("address", ":8125", "UDP service address")
+	gangliaAddress      = flag.String("ganglia", "", "Ganglia gmond servers, comma separated")
+	gangliaPort         = flag.Int("ganglia-port", 8649, "Ganglia gmond service port")
+	gangliaSpoofHost    = flag.String("ganglia-spoof-host", "", "Ganglia gmond spoof host string")
+	gangliaGroup        = flag.String("ganglia-group", "statsd", "Ganglia metric group name")
+	calculationInterval = flag.Int64("calculation-interval", 10, "Calculation interval")
+	debug               = flag.Bool("debug", false, "Debug mode")
 )
 
 var (
@@ -134,6 +134,7 @@ func submit() {
 		avg := sum / float64(len(timerValues))
 		// Send timer average to Ganglia
 		gmSubmitFloat(fmt.Sprintf("avg_%s", name), "ms", avg)
+		timers[name] = make([]float64, 0, 200)
 	}
 }
 
