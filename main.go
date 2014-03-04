@@ -120,28 +120,21 @@ func submit() {
 		gmSubmitFloat(fmt.Sprintf("count_%s", name), "count", averageOverInterval)
 		counters[name] = 0
 	}
-	// Calculate timer data and send to Ganglia
+	// Calculate timer average and send to Ganglia
 	for name, timerValues := range timers {
 		if len(timerValues) == 0 {
 			// Submit timer data 0 (no data)
-			gmSubmitFloat(fmt.Sprintf("min_%s", name), "ms", 0)
 			gmSubmitFloat(fmt.Sprintf("avg_%s", name), "ms", 0)
-			gmSubmitFloat(fmt.Sprintf("max_%s", name), "ms", 0)
 			continue
 		}
 		// Calculate min/average/max response time
-		sort.Float64s(timerValues)
-		min := timerValues[0]
-		max := timerValues[len(timerValues) - 1]
 		var sum float64
 		for i := 0; i < len(timerValues); i++ {
 			sum += timerValues[i]
 		}
 		avg := sum / float64(len(timerValues))
-		// Send min/avg/max response time to Ganglia
-		gmSubmitFloat(fmt.Sprintf("min_%s", name), "ms", min)
+		// Send timer average to Ganglia
 		gmSubmitFloat(fmt.Sprintf("avg_%s", name), "ms", avg)
-		gmSubmitFloat(fmt.Sprintf("max_%s", name), "ms", max)
 	}
 }
 
