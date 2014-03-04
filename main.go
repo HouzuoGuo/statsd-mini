@@ -8,7 +8,6 @@ import (
 	"log"
 	"net"
 	"regexp"
-	"sort"
 	"strconv"
 	"strings"
 	"time"
